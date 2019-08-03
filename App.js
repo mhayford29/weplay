@@ -12,15 +12,11 @@ const FindStack = createStackNavigator({
   Find1,
   Find2,
   Find3
-}, {
-  headerMode: 'none'
 })
 
 const AccountStack = createStackNavigator({
   Account,
   EditAccount,
-}, {
-  headerMode: 'none'
 })
 
 
@@ -32,19 +28,18 @@ const TabNavigator = createBottomTabNavigator({
 },
 {
 
-  initialRouteName: 'Find',
+  initialRouteName: 'Account',
   headerMode: 'screen',
   tabBarOptions: {
-    activeTintColor: 'orange',
-    inactiveTintColor: 'black',
+    activeTintColor: 'black',
+    inactiveTintColor: 'white',
     labelStyle: {
-      fontSize: 15,
-      top: 10,
-      fontWeight: 200,
+      fontSize: 20,
+      fontWeight: 'bold',
     },
     style: {
-      backgroundColor: 'white',
-      height: 30
+
+      backgroundColor: 'lightgray',
     },
   },
 }
@@ -55,7 +50,7 @@ const AuthStack = createSwitchNavigator({
   Tab: TabNavigator
 },
 {
-  initialRouteName: 'Tab'
+  initialRouteName: 'Login'
 })
 
 export default createAppContainer(

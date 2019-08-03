@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TextInput, View, AsyncStorage, ImageBackground } from 'react-native';
-import { AuthSession } from 'expo';
-import { FB_APP_ID } from '../config.js';
+import { Google } from 'expo';
+import { CLIENT_ID } from '../config.js';
 import { Button } from 'react-native-elements';
 import Axios from 'axios';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -24,10 +23,8 @@ export default class Login extends Component {
       name: '',
       isSignedIn: false
     }
-    this._handlePressAsync = this._handlePressAsync.bind(this);
     this.saveItem = this.saveItem.bind(this);
-    this.callGraph = this.callGraph.bind(this);
-    //this.signOut = this.signOut.bind(this);
+    this.handleGoogleStrategy = this.handleGoogleStrategy.bind(this);
   }
 
   async saveItem(item, selectedValue) {
@@ -38,69 +35,40 @@ export default class Login extends Component {
     }
   }
 
-  callGraph = async (token) => {
-    const response = await fetch(
-      `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,about,picture`
-    );
-    //console.log(response);
-    var responseJSON = JSON.stringify(await response.json());
-    var obj = JSON.parse(responseJSON)
-    Axios.get('http://localhost:3000/weplay/profile', {
-      params: {
-        facebookID: obj.id,
-        name: obj.name
-      }
-    })
+  handleGoogleStrategy = async () => {
+    const { type, accessToken, user } = await Google.logInAsync({
+      iosClientId: CLIENT_ID
+    });
 
+    if (type === 'success') {
+      let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      Axios.get('http://localhost:3000/weplay/profile', {
+        params: {
+          googleID: user.id,
+          name: user.name
+        }
+      })
       .then(({ data }) => {
         const userData = JSON.stringify(data[0]);
         this.saveItem('userData', userData);
         this.setState({ isSignedIn: true }, () => {
-          this.props.navigation.navigate('Account', { isSignedIn: this.state.isSignedIn })
-        })
+          this.props.navigation.navigate('Account', {isSignedIn: this.state.isSignedIn})
+        }) 
       })
       .catch(err => console.log(err, 'error in get'))
-
-  };
-
-  _handlePressAsync = async () => {
-    let redirectUrl = AuthSession.getRedirectUrl();
-    let result = await AuthSession.startAsync({
-      authUrl:
-        `https://www.facebook.com/v2.8/dialog/oauth?response_type=token` +
-        `&client_id=${FB_APP_ID}` +
-        `&redirect_uri=${encodeURIComponent(redirectUrl)}`,
-    });
-    console.log('test');
-    this.callGraph(result.params.access_token);
+    }
   }
-
-  // signOut = async () => {
-  //   var iParams = token;
-  //   fetch(
-  //     `https://graph.facebook.com/User_id/permissions`,{
-  //     method : 'DELETE',
-  //     body: iParams
-  //   })
-  // }
 
   render() {
     return (
-      <ImageBackground source={require('../images/background/background.jpg')} style={{ height: '100%', width: '100%' }}>
+      <ImageBackground source={require('../images/background/background.jpg')} style={{height: '100%', width: '100%'}}>
         <View style={styles.container}>
-          <Text style={{ fontSize: 50, fontStyle: 'italic' }}>WePlay</Text>
-          {this.state.isSignedIn ?
-            (<View style={{ marginTop: 20 }}>
-              <Button title="Sign Out" onPress={this.signOut}></Button>
-            </View>) :
-            (<View style={{ marginTop: 20 }}>
-              <Button
-                titleStyle={{ color: 'white' }}
-                buttonStyle={{ backgroundColor: 'rgba(66, 164, 245,.9)', width: 200,  borderRadius: 50 }}
-                containerStyle={{ shadowColor: 'black', shadowRadius: 3, shadowOpacity: .7, shadowOffset: { width: 4, height: 4 }}}
-                title="Sign In With Facebook" onPress={this._handlePressAsync} />
-            </View>)
-          }
+          <Text style={{ fontSize: 50, fontStyle: 'italic', fontWeight: 'bold' }}>WePlay</Text>  
+          <View style={{ marginTop: 20 }}>
+            <Button style={{ backgroundColor: 'red' }} title="Sign In With Google" onPress={this.handleGoogleStrategy} />
+          </View>
         </View>
       </ImageBackground>
     );

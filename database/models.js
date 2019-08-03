@@ -74,7 +74,8 @@ Event.init({
   },
   owner: { //FOREIGN KEY
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true,
+    defaultValue: '65742'
   },
   members: {
     type: Sequelize.ARRAY(Sequelize.INTEGER),
@@ -96,7 +97,7 @@ Profile.init({
     type: Sequelize.STRING,
     allowNull: false
   },
-  facebookID: {
+  googleID: {
     type: Sequelize.STRING,
     allowNull: false
   },

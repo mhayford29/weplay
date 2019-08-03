@@ -69,8 +69,8 @@ export default class EditAccount extends Component {
         </View>
         <Text style={styles.attribute}>Height: </Text>
         <View style={styles.attributeContainer}>
-          <Dropdown label={`Feet ${heightFeet}`} data={feet} onChangeText={(text) => handleChange(text, 'heightFeet')}></Dropdown>
-          <Dropdown label={`Inches ${heightInches}`} data={inches} onChangeText={(text) => handleChange(text, 'heightInches')}></Dropdown>
+          <Dropdown label={JSON.stringify(heightFeet)} data={feet} onChangeText={(text) => handleChange(text, 'heightFeet')}></Dropdown>
+          <Dropdown label={JSON.stringify(heightInches)} data={inches} onChangeText={(text) => handleChange(text, 'heightInches')}></Dropdown>
         </View>
         <Text style={styles.attribute}>Weight In Pounds: </Text>
         <View style={styles.attributeContainer}>
@@ -94,8 +94,7 @@ export default class EditAccount extends Component {
 const styles = StyleSheet.create({
   mainContainer: {
     marginRight: 20,
-    marginLeft: 20,
-    marginTop: 90,
+    marginLeft: 20
   },
   title: {
     fontSize: 50,

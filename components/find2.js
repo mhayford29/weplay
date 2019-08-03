@@ -44,26 +44,19 @@ export default class Find2 extends Component {
       <ImageBackground source={require('../images/background/background.jpg')} style={{ height: '100%', width: '100%' }}>
 
         <View style={styles.outer}>
-          <View style={{ alignItems: 'left', marginLeft: 30}}>
-          <Button title='Back' onPress={() => {
-            this.props.navigation.goBack()
-          }}></Button>
-          </View>
           <View style={[styles.body, { flex: .4 }]}>
             <Text style={{ fontSize: 40, top: 0 }}>Find an Event</Text>
           </View>
-          <View style={[styles.body, { flex: .4, marginBottom: 20 }]}>
+          <View style={[styles.body, { flex: .2, marginBottom: 20 }]}>
             {monthEnd ?
               <View style={{ alignItems: 'center' }}>
                 <Text style={{ fontSize: 15 }}>Searching for {sport} Events Between {month}/{day} and {monthEnd}/{dayEnd}</Text>
-                <Text style={{ fontSize: 15, marginBottom: 10 }}>in zip code: {zip}</Text>
-                <Text style={{ fontSize: 15 }}>{query.length} events found!</Text>
+                <Text style={{ fontSize: 15 }}>in zip code: {zip}</Text>
               </View>
               :
               <View style={{ alignItems: 'center' }}>
                 <Text style={{ fontSize: 15 }}>Searching for {sport} On {month}/{day}</Text>
                 <Text style={{ fontSize: 15 }}>in zip code: {zip}</Text>
-                <Text style={{ fontSize: 15 }}>{query.length} events found!</Text>
               </View>
             }
           </View>
@@ -79,9 +72,9 @@ export default class Find2 extends Component {
                       { sport, zip, month, day, item })
                   }}>
                     <ImageBackground source={pictures[item.sport]} style={styles.backgroundImage}>
-                      <Text style={{ fontSize: 20, margin: 5, fontWeight: 'bold', color: 'white', textShadowColor: 'black', textShadowRadius: 7 }}>{item.name}</Text>
-                      <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'white', textShadowColor: 'black', textShadowRadius: 7 }}>{item.currentPlayers}/{item.maxPlayers} Players | Time: {item.time}</Text>
-                      <Text style={{ fontSize: 12, margin: 10, fontWeight: 'bold', color: 'white', textShadowColor: 'black', textShadowRadius: 7 }}>{item.details.split('.')[0] + '.'}</Text>
+                      <Text style={{ fontSize: 20, margin: 5, fontWeight: 'bold', color: 'white', textShadowColor: 'black', textShadowRadius: 5 }}>{item.name}</Text>
+                      <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'white', textShadowColor: 'black', textShadowRadius: 5 }}>{item.currentPlayers}/{item.maxPlayers} Players | Time: {item.time}</Text>
+                      <Text style={{ fontSize: 12, margin: 10, fontWeight: 'bold', color: 'white', textShadowColor: 'black', textShadowRadius: 5 }}>{item.details.split('.')[0] + '.'}</Text>
                     </ImageBackground>
                   </TouchableOpacity>
                 )

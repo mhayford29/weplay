@@ -24,15 +24,10 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginRight: 10,
     marginLeft: 8,
-    marginBottom: 15
   },
-  inputContainer: {
-    borderBottomColor: 'black',
-  },  
   dropdown: {
     marginRight: 20,
-    marginLeft: 18,
-    marginTop: 10
+    marginLeft: 18
   },
   button: {
     marginBottom: 15,
@@ -60,19 +55,14 @@ export default class Create extends React.Component {
       minPlayers: 0,
       evenOnly: false,
       details: '',
-      members: [],
-      owner: 99999
     };
   }
 
-  componentDidMount(){
-    AsyncStorage.getItem('userData')
-    .then(data => {
-      console.log('grabbed data from async storage', JSON.parse(data).id);
-      this.setState({owner: JSON.parse(data).id, members: [JSON.parse(data).id]})
-    })
-    .catch(err => console.log('error getting data from async storage'))
-  }
+  // componentDidMount(){
+  //   AsyncStorage.getItem('userData')
+  //   .then(data => console.log('grabbed data from async storage', JSON.parse(data)))
+  //   .catch(err => console.log('error getting data from async storage'))
+  // }
 
   render() {
 
@@ -114,8 +104,6 @@ export default class Create extends React.Component {
               <Input
                 placeholder="Event Name"
                 placeholderTextColor='black'
-                containerStyle={{height: 30}}
-                inputStyle={{fontSize: 22}}
                 onChangeText={(name) => this.setState({ name })}
               />
             </View>
@@ -263,10 +251,10 @@ export default class Create extends React.Component {
               onChangeText={(details) => this.setState({ details })}
             />
             <Button
-              style={[styles.button, {alignSelf: 'center'}]}
-              titleStyle={{ color: 'white' }}
-              buttonStyle={{ backgroundColor: 'rgba(66, 164, 245,.9)', width: 250,  borderRadius: 50 }}
-              containerStyle={{ shadowColor: 'black', shadowRadius: 3, shadowOpacity: .7, shadowOffset: { width: 4, height: 4 }}}
+              style={styles.button}
+              titleStyle={{color: '#004885'}}
+              buttonStyle={{ backgroundColor: 'rgba(66, 164, 245,.9)', width: Dimensions.get('window').width - 55}}
+              containerStyle={{ shadowColor: 'black', shadowRadius: 5, shadowOpacity: 1, shadowOffset: {width: 2, height: 2}}}
               onPress={() => {
 
                 //Make sure inputs are present/valid
@@ -303,10 +291,10 @@ export default class Create extends React.Component {
 
                 else {
                   axios.post('http://localhost:3000/weplay/event', this.state)
-                    .then(() => console.log('Success posting event to database! Owner is: ', this.state.owner))
+                    .then(() => console.log('Success posting event to database!'))
                     .catch(err => console.log(err));
+
                   Alert.alert('Event successfully posted!');
-                  this.props.navigation.navigate('Find');
                 }
               }}
               title="Post Event"

@@ -10,11 +10,11 @@ Make sure you have both PostgreSQL, Expo and NPM installed
 npm install
 ```
 ```
-npm resetDB
+npm run resetDB
 ```
 
 ```
-npm seed
+npm run seed
 ```
 ```
 npm run server
